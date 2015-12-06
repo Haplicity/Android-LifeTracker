@@ -1,0 +1,21 @@
+extends ./base.jade
+block append style
+    link(rel="stylesheet", type="text/css", href="/assets/style.css")
+block body
+  nav
+    .navlink
+      a(href="/logout") Log out
+  section#rooms
+    if !rooms || rooms.length == 0
+      div.room
+        h3.emptyRoom No Rooms yet
+    else
+      each val in rooms
+        div.room
+          h3.roomName Name: #{val.name}
+          h3.roomUsers Users: #{val.users}         
+  #error
+    h3
+      span#errorMessage Wrong username or password
+block scripts
+        script(src="/assets/maker.js")
