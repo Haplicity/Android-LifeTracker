@@ -81,6 +81,8 @@ var server = app.listen(port, function(err) {
 var io = require('socket.io').listen(server);
 
 io.on('connection', function(socket) {
+	console.log('device connected');
+	
 	socket.on('login', function(data) {
 		controllers.Account.socketLogin(data);
 	});
