@@ -63,7 +63,7 @@ var signup = function(req, res) {
 
 var socketLogin = function(socket, data) {
 	console.log(data);
-	Account.AccountModel.authenticate(data.username, data.pass, function(err, account) {
+	Account.AccountModel.authenticate(data[0].username, data[0].pass, function(err, account) {
 		if (err || !account) {
 			socket.emit('loginResult', {success: false});
 		} else {
