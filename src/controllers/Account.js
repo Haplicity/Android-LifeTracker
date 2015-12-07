@@ -73,9 +73,9 @@ var socketLogin = function(socket, data) {
 };
 
 var socketSignup = function(socket, data) {
-	Account.AccountModel.generateHash(data.pass, function(salt, hash) {
+	Account.AccountModel.generateHash(data[0].pass, function(salt, hash) {
 		var accountData = {
-			username: data.username,
+			username: data[0].username,
 			salt: salt,
 			password: hash
 		};
