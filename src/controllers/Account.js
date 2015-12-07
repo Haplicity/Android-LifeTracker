@@ -61,12 +61,34 @@ var signup = function(req, res) {
 	});
 };
 
-var socketLogin = function(data) {
-	console.log('LOGIN');
+var socketLogin = function(socket, data) {
+	Account.AccountModel.authenticate(data.username, data.pass, function(err, account) {
+		if (err || !account) {
+			socket.emit('loginResult', {success: false});
+		} else {
+			socket.emit('loginResult', {success: true});
+		}
+	});
 };
 
-var socketSignup = function(data) {
-	console.log('SIGNUP');
+var socketSignup = function(socket, data) {
+	Account.AccountModel.generateHash(data.pass, function(salt, hash) {
+		var accountData = {
+			username: data.username,
+			salt: salt,
+			password: hash
+		};
+		
+		var newAccount = new Account.AccountModel(accountData);
+		
+		newAccount.save(function(err) {
+			if(err) {
+				socket.emit('signupResult', {success: false});
+			} else {
+				socket.emit('signupResult', {success: true});
+			}
+		});
+	});
 };
 
 module.exports.loginPage = loginPage;
