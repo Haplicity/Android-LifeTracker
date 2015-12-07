@@ -83,11 +83,11 @@ var io = require('socket.io').listen(server);
 io.on('connection', function(socket) {
 	console.log('device connected');
 	
-	socket.on('login', function(socket, data) {
-		controllers.Account.socketLogin(data);
+	socket.on('login', function(data) {
+		controllers.Account.socketLogin(socket, data);
 	});
 	
-	socket.on('signup', function(socket, data) {
-		controllers.Account.socketSignup(data);
+	socket.on('signup', function(data) {
+		controllers.Account.socketSignup(socket, data);
 	});
 });
