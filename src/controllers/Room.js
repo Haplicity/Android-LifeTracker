@@ -127,7 +127,7 @@ var socketGetRooms = function(socket) {
 			socket.emit('getRoomResults', {success: false});
 		} else {
 			var array;
-			for (let val in rooms) {
+			for (var val in rooms) {
 				var tempRoom = {
 					name: val.name,
 					description: val.description,
