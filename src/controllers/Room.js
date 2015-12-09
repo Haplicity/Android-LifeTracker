@@ -22,7 +22,7 @@ var makeRoom = function(req, res) {
 	var RoomData = {
 		name: req.body.name,
 		description: req.body.description,
-		creator: req.session.account._id,
+		creator: req.session.account.username,
 		users: req.session.account.username
 	};
 	
@@ -124,9 +124,21 @@ var socketCreateRoom = function(socket, data) {
 var socketGetRooms = function(socket) {
 	Room.RoomModel.findAll(function(err, docs) {
 		if (err) {
-			socket.emit('getRoomResults', {success: false, rooms: docs});
+			socket.emit('getRoomResults', {success: false});
 		} else {
-			socket.emit('getRoomResults', {success: true, rooms: docs});
+			var array;
+			for (let val in rooms) {
+				var tempRoom = {
+					name: val.name,
+					description: val.description,
+					creator: val.creator,
+					users: val.users
+				};
+				
+				array.push(tempRoom);
+			}
+			
+			socket.emit('getRoomResults', {success: true, rooms: array});
 		}
 	});
 };

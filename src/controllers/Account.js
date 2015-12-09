@@ -65,10 +65,10 @@ var socketLogin = function(socket, data) {
 	console.log(data);
 	Account.AccountModel.authenticate(data[0].username, data[0].pass, function(err, account) {
 		if (err || !account) {
-			socket.emit('loginResult', {success: false, id: "FAILURE"});
+			socket.emit('loginResult', {success: false});
 		} else {
 			var accountData = account.toAPI();
-			socket.emit('loginResult', {success: true, id: accountData._id});
+			socket.emit('loginResult', {success: true});
 		}
 	});
 };
@@ -85,10 +85,10 @@ var socketSignup = function(socket, data) {
 		
 		newAccount.save(function(err) {
 			if(err) {
-				socket.emit('signupResult', {success: false, id: "FAILURE"});
+				socket.emit('signupResult', {success: false});
 			} else {
 				var accountData = newAccount.toAPI();
-				socket.emit('signupResult', {success: true, id: accountData._id});
+				socket.emit('signupResult', {success: true});
 			}
 		});
 	});

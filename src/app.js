@@ -92,6 +92,7 @@ io.on('connection', function(socket) {
 	});
 	
 	socket.on('createRoom', function(data) {
+		
 		controllers.Room.socketCreateRoom(socket, data);
 	});
 	

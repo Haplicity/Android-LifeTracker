@@ -22,9 +22,9 @@ var RoomSchema = new mongoose.Schema({
 	},
 	
 	creator: {
-		type: mongoose.Schema.ObjectId,
+		type: String,
 		required: true,
-		ref: 'Account'
+		trim: true
 	},
 	
 	users: {
