@@ -174,7 +174,6 @@ var socketLeaveRoom = function(socket, data) {
 			docs.remove(function(err) {
 				if (err) {
 					socket.emit('leaveRoomResult', {success: false});
-					return;
 				}
 			});
 		} else {
