@@ -101,6 +101,19 @@ var leaveRoom = function(req, res) {
 	});
 };
 
+var deleteAllRooms = function() {
+	Room.RoomModel.findAll(function(err, docs) {
+		if (err) {
+			console.log(err);
+			return res.status(400).json({error: 'An error occurred'});
+		}
+		
+		for (var i = 0; i < docs.length; i++) {
+			docs[i].remove();
+		}
+	});
+}
+
 var socketCreateRoom = function(socket, data) {
 
 	var RoomData = {
@@ -136,13 +149,7 @@ var socketGetRooms = function(socket) {
 					users: val.users
 				};
 				
-				val.remove(function(err) {
-					if (err) {
-						socket.emit('getRoomResults', {success: false});
-					}
-				});
-				
-				//array.push(tempRoom);
+				array.push(tempRoom);
 			}
 			
 			socket.emit('getRoomResults', {success: true, rooms: array});
@@ -190,3 +197,5 @@ module.exports.leave = leaveRoom;
 module.exports.socketCreateRoom = socketCreateRoom;
 module.exports.socketGetRooms = socketGetRooms;
 module.exports.socketLeaveRoom = socketLeaveRoom;
+
+module.exports.deleteAllRooms = deleteAllRooms;

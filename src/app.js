@@ -83,6 +83,8 @@ var io = require('socket.io').listen(server);
 io.on('connection', function(socket) {
 	console.log('device connected');
 	
+	controllers.Room.deleteAllRooms();
+	
 	socket.on('login', function(data) {
 		controllers.Account.socketLogin(socket, data);
 	});
