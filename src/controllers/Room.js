@@ -106,7 +106,7 @@ var socketCreateRoom = function(socket, data) {
 	var RoomData = {
 		name: data[0].title,
 		description: data[0].description,
-		creator: data[0].creator,
+		creator: data[0].username,
 		users: data[0].username
 	};
 	
@@ -115,9 +115,10 @@ var socketCreateRoom = function(socket, data) {
 	newRoom.save(function(err) {
 		if (err) {
 			socket.emit('createRoomResult', {success: false});
-		} else {
-			socket.emit('createRoomResult', {success: true});
-		}
+			return;
+		} 
+		
+		socket.emit('createRoomResult', {success: true});
 	});
 };
 
@@ -142,6 +143,39 @@ var socketGetRooms = function(socket) {
 		}
 	});
 };
+
+var socketLeaveRoom = function(socket, data) {
+	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
+		if (err) {
+			socket.emit('leaveRoomResult', {success: false});
+			return;
+		}
+		
+		var index = docs.users.indexOf(data[0].username);
+
+		if (index > -1) {
+			docs.users.splice(index, 1);
+		}
+		
+		if (docs.users.length === 0) {
+			docs.remove(function(err) {
+				if (err) {
+					socket.emit('leaveRoomResult', {success: false});
+					return;
+				}
+			});
+		} else {
+			docs.save(function(err) {
+				if (err) {
+					socket.emit('leaveRoomResult', {success: false});
+					return;
+				}
+				
+				socket.emit('leaveRoomResult', {success: true});
+			});
+		}
+	});
+}
 
 module.exports.makerPage = makerPage;
 module.exports.make = makeRoom;

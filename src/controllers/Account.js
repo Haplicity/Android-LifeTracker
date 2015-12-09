@@ -62,14 +62,13 @@ var signup = function(req, res) {
 };
 
 var socketLogin = function(socket, data) {
-	console.log(data);
 	Account.AccountModel.authenticate(data[0].username, data[0].pass, function(err, account) {
 		if (err || !account) {
 			socket.emit('loginResult', {success: false});
-		} else {
-			var accountData = account.toAPI();
-			socket.emit('loginResult', {success: true});
-		}
+			return;
+		} 
+		
+		socket.emit('loginResult', {success: true});
 	});
 };
 
@@ -86,10 +85,10 @@ var socketSignup = function(socket, data) {
 		newAccount.save(function(err) {
 			if(err) {
 				socket.emit('signupResult', {success: false});
-			} else {
-				var accountData = newAccount.toAPI();
-				socket.emit('signupResult', {success: true});
-			}
+				return;
+			} 
+			
+			socket.emit('signupResult', {success: true});
 		});
 	});
 };
