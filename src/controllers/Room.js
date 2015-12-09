@@ -22,7 +22,7 @@ var makeRoom = function(req, res) {
 	var RoomData = {
 		name: req.body.name,
 		description: req.body.description,
-		creator: req.session.account.username,
+		creator: req.session.account._id,
 		users: req.session.account.username
 	};
 	
