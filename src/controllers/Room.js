@@ -175,7 +175,7 @@ var socketLeaveRoom = function(socket, data) {
 			});
 		}
 	});
-}
+};
 
 module.exports.makerPage = makerPage;
 module.exports.make = makeRoom;
