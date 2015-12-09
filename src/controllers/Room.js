@@ -136,3 +136,4 @@ module.exports.make = makeRoom;
 module.exports.join = joinRoom;
 module.exports.leave = leaveRoom;
 module.exports.socketCreateRoom = socketCreateRoom;
+module.exports.socketGetRooms = socketGetRooms;
