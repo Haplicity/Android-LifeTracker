@@ -90,4 +90,12 @@ io.on('connection', function(socket) {
 	socket.on('signup', function(data) {
 		controllers.Account.socketSignup(socket, data);
 	});
+	
+	socket.on('createRoom', function(data) {
+		controllers.Room.socketCreateRoom(socket, data);
+	});
+	
+	socket.on('getRooms', function() {
+		controllers.Room.socketGetRooms(socket);
+	});
 });

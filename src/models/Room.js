@@ -15,6 +15,12 @@ var RoomSchema = new mongoose.Schema({
 		set: setName
 	},
 	
+	description: {
+		type: String,
+		rquired: true,
+		trim: true
+	},
+	
 	creator: {
 		type: mongoose.Schema.ObjectId,
 		required: true,
@@ -43,7 +49,7 @@ RoomSchema.methods.toAPI = function() {
 };
 
 RoomSchema.statics.findAll = function(callback) {
-	return RoomModel.find().select("name creator users").exec(callback);
+	return RoomModel.find().select("name description creator users").exec(callback);
 };
 
 RoomSchema.statics.findByName = function(creatorId, roomName, callback) {
@@ -52,7 +58,7 @@ RoomSchema.statics.findByName = function(creatorId, roomName, callback) {
 		name: roomName
 	};
 	
-	return RoomModel.findOne(search).select("name creator users").exec(callback);
+	return RoomModel.findOne(search).select("name description creator users").exec(callback);
 };
 
 RoomModel = mongoose.model('Room', RoomSchema);

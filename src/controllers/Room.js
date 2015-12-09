@@ -21,6 +21,7 @@ var makeRoom = function(req, res) {
 	
 	var RoomData = {
 		name: req.body.name,
+		description: req.body.description,
 		creator: req.session.account._id,
 		users: req.session.account.username
 	};
@@ -100,7 +101,38 @@ var leaveRoom = function(req, res) {
 	});
 };
 
+var socketCreateRoom = function(socket, data) {
+
+	var RoomData = {
+		name: data[0].title,
+		description: data[0].description,
+		creator: data[0].creator,
+		users: data[0].username
+	};
+	
+	var newRoom = new Room.RoomModel(RoomData);
+	
+	newRoom.save(function(err) {
+		if (err) {
+			socket.emit('createRoomResult', {success: false});
+		} else {
+			socket.emit('createRoomResult', {success: true});
+		}
+	});
+};
+
+var socketGetRooms = function(socket) {
+	Room.RoomModel.findAll(function(err, docs) {
+		if (err) {
+			socket.emit('getRoomResults', {success: false, rooms: docs});
+		} else {
+			socket.emit('getRoomResults', {success: true, rooms: docs});
+		}
+	});
+};
+
 module.exports.makerPage = makerPage;
 module.exports.make = makeRoom;
 module.exports.join = joinRoom;
 module.exports.leave = leaveRoom;
+module.exports.socketCreateRoom = socketCreateRoom;
