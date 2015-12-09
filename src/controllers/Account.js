@@ -64,10 +64,11 @@ var signup = function(req, res) {
 var socketLogin = function(socket, data) {
 	console.log(data);
 	Account.AccountModel.authenticate(data[0].username, data[0].pass, function(err, account) {
+		var accountData = account.toAPI();
+		
 		if (err || !account) {
 			socket.emit('loginResult', {success: false, id: accountData._id});
 		} else {
-			var accountData = account.toAPI();
 			socket.emit('loginResult', {success: true, id: accountData._id});
 		}
 	});
@@ -84,10 +85,11 @@ var socketSignup = function(socket, data) {
 		var newAccount = new Account.AccountModel(accountData);
 		
 		newAccount.save(function(err) {
+			var accountData = newAccount.toAPI();
+			
 			if(err) {
 				socket.emit('signupResult', {success: false, id: accountData._id});
 			} else {
-				var accountData = newAccount.toAPI();
 				socket.emit('signupResult', {success: true, id: accountData._id});
 			}
 		});
