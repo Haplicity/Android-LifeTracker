@@ -68,7 +68,9 @@ var socketLogin = function(socket, data) {
 			return;
 		} 
 		
-		socket.emit('loginResult', {success: true});
+		var accountData = account.toAPI();
+		
+		socket.emit('loginResult', {success: true, id: accountData._id.toString()});
 	});
 };
 
@@ -85,7 +87,6 @@ var socketSignup = function(socket, data) {
 		newAccount.save(function(err) {
 			if(err) {
 				socket.emit('signupResult', {success: false});
-				return;
 			} 
 			
 			socket.emit('signupResult', {success: true});

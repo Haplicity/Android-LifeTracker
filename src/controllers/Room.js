@@ -106,7 +106,7 @@ var socketCreateRoom = function(socket, data) {
 	var RoomData = {
 		name: data[0].title,
 		description: data[0].description,
-		creator: data[0].username,
+		creator: data[0].creator,
 		users: data[0].username
 	};
 	

@@ -22,9 +22,9 @@ var RoomSchema = new mongoose.Schema({
 	},
 	
 	creator: {
-		type: String,
+		type: mongoose.Schema.ObjectId,
 		required: true,
-		trim: true
+		ref: 'Account'
 	},
 	
 	users: {
@@ -54,7 +54,7 @@ RoomSchema.statics.findAll = function(callback) {
 
 RoomSchema.statics.findByName = function(creatorId, roomName, callback) {
 	var search = {
-		creator: creatorId,
+		creator: mongoose.Types.ObjectId(creatorId),
 		name: roomName
 	};
 	
