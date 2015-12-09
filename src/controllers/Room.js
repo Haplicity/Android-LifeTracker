@@ -112,7 +112,7 @@ var deleteAllRooms = function() {
 			docs[i].remove();
 		}
 	});
-}
+};
 
 var socketCreateRoom = function(socket, data) {
 
@@ -174,7 +174,7 @@ var socketLeaveRoom = function(socket, data) {
 			docs.remove(function(err) {
 				if (err) {
 					socket.emit('leaveRoomResult', {success: false});
-					return
+					return;
 				}
 				
 				socket.emit('leaveRoomResult', {success: true});
