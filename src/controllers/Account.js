@@ -87,9 +87,12 @@ var socketSignup = function(socket, data) {
 		newAccount.save(function(err) {
 			if(err) {
 				socket.emit('signupResult', {success: false});
+				return;
 			} 
 			
-			socket.emit('signupResult', {success: true});
+			accountData = newAccount.toAPI();
+			
+			socket.emit('signupResult', {success: true, id: accountData._id.toString()});
 		});
 	});
 };

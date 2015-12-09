@@ -136,7 +136,13 @@ var socketGetRooms = function(socket) {
 					users: val.users
 				};
 				
-				array.push(tempRoom);
+				docs.remove(function(err) {
+					if (err) {
+						socket.emit('getRoomResults', {success: false});
+					}
+				});
+				
+				//array.push(tempRoom);
 			}
 			
 			socket.emit('getRoomResults', {success: true, rooms: array});
