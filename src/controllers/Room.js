@@ -141,12 +141,12 @@ var socketGetRooms = function(socket) {
 			socket.emit('getRoomResults', {success: false});
 		} else {
 			var array;
-			for (var val in rooms) {
+			for (var i = 0; i < docs.length; i++) {
 				var tempRoom = {
-					name: val.name,
-					description: val.description,
-					creator: val.creator,
-					users: val.users
+					name: docs[i].name,
+					description: docs[i].description,
+					creator: docs[i].creator,
+					users: docs[i].users
 				};
 				
 				array.push(tempRoom);
@@ -158,7 +158,8 @@ var socketGetRooms = function(socket) {
 };
 
 var socketLeaveRoom = function(socket, data) {
-	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
+	Room.RoomModel.findByName(data[0].creator.trim(), data[0].roomName, function(err, docs) {
+		console.log(data[0].creator);
 		if (err) {
 			socket.emit('leaveRoomResult', {success: false});
 			return;
