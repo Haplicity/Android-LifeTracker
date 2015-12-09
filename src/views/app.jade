@@ -5,6 +5,13 @@ block body
   nav
     .navlink
       a(href="/logout") Log out
+  section#makeRoom    
+    form#roomForm(class="roomForm", name="roomForm", action="/maker", method="POST")
+      label(for="name") Name: 
+      input#roomName(type="text", name="name", placeholder="Room Name")
+      input#roomDescription(type="text", name="description", placeholder="Room Description")
+      input(type="hidden", name="_csrf", value="#{csrfToken}")
+      a#makeRoomSubmit(class="makeRoomSubmit", href="#") Make Room
   section#rooms
     if !rooms || rooms.length == 0
       div.room
@@ -13,8 +20,20 @@ block body
       each val in rooms
         div.room
           h3.roomName Name: #{val.name}
-          h3.roomDescription Description: #{val.description}
-          h3.roomUsers Users: #{val.users}         
+          h3.roomUsers Users: #{val.users}
+          form#joinForm(class="joinForm", name="joinForm", action="/join", method="POST")
+            input(type="hidden", name="name", value="#{val.name}")
+            input(type="hidden", name="creator", value="#{val.creator}")
+            input(type="hidden", name="users", value="#{val.users}")
+            input(type="hidden", name="_csrf", value="#{csrfToken}")
+            a#joinRoomSubmit(class="joinRoomSubmit", href="#") Join Room
+          form#leaveForm(class="leaveForm", name="leaveForm", action="/leave", method="POST")
+            input(type="hidden", name="name", value="#{val.name}")
+            input(type="hidden", name="creator", value="#{val.creator}")
+            input(type="hidden", name="users", value="#{val.users}")
+            input(type="hidden", name="_csrf", value="#{csrfToken}")
+            a#leaveRoomSubmit(class="leaveRoomSubmit", href="#") Leave Room
+              
   #error
     h3
       span#errorMessage Wrong username or password
