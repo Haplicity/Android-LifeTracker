@@ -92,11 +92,14 @@ io.on('connection', function(socket) {
 	});
 	
 	socket.on('createRoom', function(data) {
-		
 		controllers.Room.socketCreateRoom(socket, data);
 	});
 	
 	socket.on('getRooms', function() {
 		controllers.Room.socketGetRooms(socket);
+	});
+	
+	socket.on('leaveRoom', function(data) {
+		controllers.Room.socketLeaveRoom(socket, data);
 	});
 });
