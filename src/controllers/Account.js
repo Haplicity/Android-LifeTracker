@@ -70,7 +70,7 @@ var socketLogin = function(socket, data) {
 		
 		var accountData = account.toAPI();
 		
-		socket.emit('loginResult', {success: true, id: accountData.id.toString()});
+		socket.emit('loginResult', {success: true, id: accountData._id});
 	});
 };
 
