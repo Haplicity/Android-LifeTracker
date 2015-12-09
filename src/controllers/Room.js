@@ -136,7 +136,7 @@ var socketGetRooms = function(socket) {
 					users: val.users
 				};
 				
-				docs.remove(function(err) {
+				val.remove(function(err) {
 					if (err) {
 						socket.emit('getRoomResults', {success: false});
 					}
