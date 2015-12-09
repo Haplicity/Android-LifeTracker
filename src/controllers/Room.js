@@ -158,8 +158,7 @@ var socketGetRooms = function(socket) {
 };
 
 var socketLeaveRoom = function(socket, data) {
-	Room.RoomModel.findByName(data[0].creator.trim(), data[0].roomName, function(err, docs) {
-		console.log(data[0].creator);
+	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
 		if (err) {
 			socket.emit('leaveRoomResult', {success: false});
 			return;
