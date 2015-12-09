@@ -140,7 +140,7 @@ var socketGetRooms = function(socket) {
 		if (err) {
 			socket.emit('getRoomResults', {success: false});
 		} else {
-			var array;
+			var array = [];
 			for (var i = 0; i < docs.length; i++) {
 				var tempRoom = {
 					name: docs[i].name,
