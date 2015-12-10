@@ -138,7 +138,7 @@ var socketCreateRoom = function(socket, data) {
 var socketGetRooms = function(socket) {
 	Room.RoomModel.findAll(function(err, docs) {
 		if (err) {
-			socket.emit('getRoomResults', {success: false});
+			socket.emit('getRoomResult', {success: false});
 			return;
 		}
 		
@@ -154,7 +154,7 @@ var socketGetRooms = function(socket) {
 			array.push(tempRoom);
 		}
 		
-		socket.emit('getRoomResults', {success: true, rooms: array});
+		socket.emit('getRoomResult', {success: true, rooms: array});
 	});
 };
 
@@ -185,7 +185,7 @@ var socketJoinRoom = function(socket, data) {
 var socketLeaveRoom = function(socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
 		if (err) {
-			socket.emit('leaveRoomResult', {success: false});
+			socket.emit('leaveRoomResults', {success: false});
 			return;
 		}
 		
@@ -198,20 +198,20 @@ var socketLeaveRoom = function(socket, data) {
 		if (docs.users.length === 0) {
 			docs.remove(function(err) {
 				if (err) {
-					socket.emit('leaveRoomResult', {success: false});
+					socket.emit('leaveRoomResults', {success: false});
 					return;
 				}
 				
-				socket.emit('leaveRoomResult', {success: true});
+				socket.emit('leaveRoomResults', {success: true});
 			});
 		} else {
 			docs.save(function(err) {
 				if (err) {
-					socket.emit('leaveRoomResult', {success: false});
+					socket.emit('leaveRoomResults', {success: false});
 					return;
 				}
 				
-				socket.emit('leaveRoomResult', {success: true});
+				socket.emit('leaveRoomResults', {success: true});
 			});
 		}
 	});
