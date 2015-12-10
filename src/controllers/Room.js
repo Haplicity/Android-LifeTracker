@@ -185,7 +185,7 @@ var socketJoinRoom = function(socket, data) {
 var socketLeaveRoom = function(socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
 		if (err) {
-			socket.emit('leaveRoomResults', {success: false});
+			socket.emit('leaveRoomResult', {success: false});
 			return;
 		}
 		
@@ -198,20 +198,20 @@ var socketLeaveRoom = function(socket, data) {
 		if (docs.users.length === 0) {
 			docs.remove(function(err) {
 				if (err) {
-					socket.emit('leaveRoomResults', {success: false});
+					socket.emit('leaveRoomResult', {success: false});
 					return;
 				}
 				
-				socket.emit('leaveRoomResults', {success: true});
+				socket.emit('leaveRoomResult', {success: true});
 			});
 		} else {
 			docs.save(function(err) {
 				if (err) {
-					socket.emit('leaveRoomResults', {success: false});
+					socket.emit('leaveRoomResult', {success: false});
 					return;
 				}
 				
-				socket.emit('leaveRoomResults', {success: true});
+				socket.emit('leaveRoomResult', {success: true});
 			});
 		}
 	});
