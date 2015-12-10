@@ -114,7 +114,7 @@ var resetLife = function(data) {
 			return;
 		}
 		
-		if(!doc) {
+		if(!account) {
             return callback();
         }
 		
