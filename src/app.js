@@ -102,7 +102,7 @@ io.on('connection', function(socket) {
 		controllers.Room.socketGetRooms(socket);
 	});
 	
-	socket.on('joinRoom', function() {
+	socket.on('joinRoom', function(data) {
 		controllers.Account.resetLife(data);
 		controllers.Room.socketJoinRoom(socket, data);
 	});
