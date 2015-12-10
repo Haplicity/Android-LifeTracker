@@ -75,7 +75,7 @@ var socketLogin = function(socket, data) {
 					socket.emit('loginResult', {success: false});
 					return;
 				}
-			}
+			});
 		}
 		
 		var accountData = account.toAPI();
@@ -123,8 +123,8 @@ var resetLife = function(data) {
 			if (err) {
 				return;
 			}
-		}
-	}
+		});
+	});
 };
 
 module.exports.loginPage = loginPage;

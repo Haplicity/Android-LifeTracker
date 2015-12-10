@@ -186,7 +186,7 @@ var socketJoinRoom = function(socket, data) {
 			socket.emit('joinRoomResult', {success: true, room: tempRoom});
 		});
 	});
-}
+};
 
 var socketLeaveRoom = function(socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
