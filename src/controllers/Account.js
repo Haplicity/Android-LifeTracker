@@ -68,6 +68,16 @@ var socketLogin = function(socket, data) {
 			return;
 		} 
 		
+		if (!account.life) {
+			account.life = 40;
+			account.save(function(err) {
+				if (err) {
+					socket.emit('loginResult', {success: false});
+					return;
+				}
+			}
+		}
+		
 		var accountData = account.toAPI();
 		
 		socket.emit('loginResult', {success: true, id: accountData._id});
@@ -78,6 +88,7 @@ var socketSignup = function(socket, data) {
 	Account.AccountModel.generateHash(data[0].pass, function(salt, hash) {
 		var accountData = {
 			username: data[0].username,
+			life: 40,
 			salt: salt,
 			password: hash
 		};
@@ -97,6 +108,25 @@ var socketSignup = function(socket, data) {
 	});
 };
 
+var resetLife = function(data) {
+	Account.AccountModel.findByUsername(data[0].username, function(err, account) {
+		if (err) {
+			return;
+		}
+		
+		if(!doc) {
+            return callback();
+        }
+		
+		account.life = 40;
+		account.save(function(err) {
+			if (err) {
+				return;
+			}
+		}
+	}
+};
+
 module.exports.loginPage = loginPage;
 module.exports.login = login;
 module.exports.logout = logout;
@@ -104,3 +134,4 @@ module.exports.signupPage = signupPage;
 module.exports.signup = signup;
 module.exports.socketLogin = socketLogin;
 module.exports.socketSignup = socketSignup;
+module.exports.resetLife = resetLife;

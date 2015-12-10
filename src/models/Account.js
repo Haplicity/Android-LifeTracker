@@ -15,6 +15,10 @@ var AccountSchema = new mongoose.Schema({
         match: /^[A-Za-z0-9_\-\.]{1,16}$/
     },
 	
+	life: {
+		type: Number
+	},
+	
 	salt: {
 		type: Buffer,
 		required: true

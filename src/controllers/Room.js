@@ -104,8 +104,7 @@ var leaveRoom = function(req, res) {
 var deleteAllRooms = function() {
 	Room.RoomModel.findAll(function(err, docs) {
 		if (err) {
-			console.log(err);
-			return res.status(400).json({error: 'An error occurred'});
+			return;
 		}
 		
 		for (var i = 0; i < docs.length; i++) {
@@ -139,23 +138,55 @@ var socketGetRooms = function(socket) {
 	Room.RoomModel.findAll(function(err, docs) {
 		if (err) {
 			socket.emit('getRoomResults', {success: false});
-		} else {
-			var array = [];
-			for (var i = 0; i < docs.length; i++) {
-				var tempRoom = {
-					name: docs[i].name,
-					description: docs[i].description,
-					creator: docs[i].creator,
-					users: docs[i].users
-				};
-				
-				array.push(tempRoom);
-			}
-			
-			socket.emit('getRoomResults', {success: true, rooms: array});
+			return;
 		}
+		
+		var array = [];
+		for (var i = 0; i < docs.length; i++) {
+			var tempRoom = {
+				name: docs[i].name,
+				description: docs[i].description,
+				creator: docs[i].creator,
+				users: docs[i].users
+			};
+			
+			array.push(tempRoom);
+		}
+		
+		socket.emit('getRoomResults', {success: true, rooms: array});
 	});
 };
+
+var socketJoinRoom = function(socket, data) {
+	Room.RoomModel.findByName(data[0].creator, data[0].name, function(err, docs) {
+		if (err) {
+			socket.emit('joinRoomResult', {success: false});
+			return;
+		}
+		
+		var index = docs.users.indexOf(data[0].username);
+
+		if (index < 0) {
+			docs.users.push(data[0].username);
+		}
+		
+		docs.save(function(err) {
+			if (err) {
+				socket.emit('joinRoomResult', {success: false});
+				return;
+			}
+			
+			var tempRoom = {
+				name: docs.name,
+				description: docs.description,
+				creator: docs.creator,
+				users: docs.users
+			};
+			
+			socket.emit('joinRoomResult', {success: true, room: tempRoom});
+		});
+	});
+}
 
 var socketLeaveRoom = function(socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
@@ -198,6 +229,7 @@ module.exports.join = joinRoom;
 module.exports.leave = leaveRoom;
 module.exports.socketCreateRoom = socketCreateRoom;
 module.exports.socketGetRooms = socketGetRooms;
+module.exports.socketJoinRoom = socketJoinRoom;
 module.exports.socketLeaveRoom = socketLeaveRoom;
 
 module.exports.deleteAllRooms = deleteAllRooms;

@@ -94,6 +94,7 @@ io.on('connection', function(socket) {
 	});
 	
 	socket.on('createRoom', function(data) {
+		controllers.Account.resetLife(data);
 		controllers.Room.socketCreateRoom(socket, data);
 	});
 	
@@ -101,7 +102,13 @@ io.on('connection', function(socket) {
 		controllers.Room.socketGetRooms(socket);
 	});
 	
+	socket.on('joinRoom', function() {
+		controllers.Account.resetLife(data);
+		controllers.Room.socketJoinRoom(socket, data);
+	});
+	
 	socket.on('leaveRoom', function(data) {
+		controllers.Account.resetLife(data);
 		controllers.Room.socketLeaveRoom(socket, data);
 	});
 });
