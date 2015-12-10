@@ -2,6 +2,7 @@ var _ = require('underscore');
 var models = require('../models');
 
 var Room = models.Room;
+var Account = models.Account;
 
 var makerPage = function(req, res) {
 	Room.RoomModel.findAll(function(err, docs) {
@@ -176,14 +177,7 @@ var socketJoinRoom = function(socket, data) {
 				return;
 			}
 			
-			var tempRoom = {
-				name: docs.name,
-				description: docs.description,
-				creator: docs.creator,
-				users: docs.users
-			};
-			
-			socket.emit('joinRoomResult', {success: true, room: tempRoom});
+			socket.emit('joinRoomResult', {success: true});
 		});
 	});
 };
