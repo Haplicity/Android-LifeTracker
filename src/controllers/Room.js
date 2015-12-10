@@ -160,7 +160,7 @@ var socketGetRooms = function(socket) {
 
 var socketJoinRoom = function(socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].name, function(err, docs) {
-		if (err) {
+		if (err || !docs) {
 			socket.emit('joinRoomResult', {success: false});
 			return;
 		}
