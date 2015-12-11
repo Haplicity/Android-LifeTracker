@@ -203,7 +203,6 @@ var socketJoinRoom = function(socket, data) {
 				
 				console.log(account.username + ": " + account.life);
 				tempLife.push(account.life);
-				console.log(users.length);
 				
 				i++;
 				
