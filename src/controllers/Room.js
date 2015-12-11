@@ -200,7 +200,7 @@ var socketJoinRoom = function(socket, data) {
 				}
 				
 				var tempObj = {
-					life: account.life
+					life: account.life.toString().trim()
 				};
 				
 				tempLife.push(tempObj);
