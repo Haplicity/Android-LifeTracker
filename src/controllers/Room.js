@@ -125,7 +125,7 @@ var socketCreateRoom = function(socket, data) {
 	
 	var newRoom = new Room.RoomModel(RoomData);
 	
-	socket.join(data[0].roomName + data[0].creator);
+	//socket.join(data[0].roomName + data[0].creator);
 	
 	newRoom.save(function(err) {
 		if (err) {
@@ -180,7 +180,7 @@ var socketJoinRoom = function(socket, data) {
 			}
 		});
 		
-		socket.join(docs.name + docs.creator);
+		//socket.join(docs.name + docs.creator);
 		
 		var tempRoom = {
 				name: docs.name,
@@ -229,7 +229,7 @@ var socketLeaveRoom = function(socket, data) {
 			docs.users.splice(index, 1);
 		}
 		
-		socket.leave(data[0].roomName + data[0].creator);
+		//socket.leave(data[0].roomName + data[0].creator);
 		
 		if (docs.users.length === 0) {
 			docs.remove(function(err) {
