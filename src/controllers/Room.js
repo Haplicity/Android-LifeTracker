@@ -207,8 +207,6 @@ var socketJoinRoom = function(socket, data) {
 			});
 		}
 		
-		console.log(tempLife);
-		
 		socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 	});
 };
