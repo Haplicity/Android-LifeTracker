@@ -201,18 +201,14 @@ var socketJoinRoom = function(socket, data) {
 					return;
 				}
 				
-				console.log(account.username + ": " + account.life);
+				i++;
 				tempLife.push(account.life);
 				
-				i++;
-				
 				if (i == docs.users.length) {
-					console.log(tempLife);
+					socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 				}
 			});
 		});
-		
-		//socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 	});
 };
 
