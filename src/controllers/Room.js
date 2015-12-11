@@ -176,32 +176,34 @@ var socketJoinRoom = function(socket, data) {
 				socket.emit('joinRoomResult', {success: false});
 				return;
 			}
-			
-			var tempRoom = {
+		});
+		
+		var tempRoom = {
 				name: docs.name,
 				description: docs.description,
 				creator: docs.creator,
 				users: docs.users
-			};
-			
-			var tempLife = [];
-			
-			for (var i = 0; i < docs.users.length; i++) {
-				Account.AccountModel.findByUsername(docs.users[i], function(err, account) {
-					if (err) {
-						return;
-					}
-					
-					if(!account) {
-						return callback();
-					}
-					
-					tempLife.push(account.life);
-				});
-			}
-			
-			socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
-		});
+		};
+		
+		var tempLife = [];
+		
+		for (var i = 0; i < docs.users.length; i++) {
+			Account.AccountModel.findByUsername(docs.users[i], function(err, account) {
+				if (err) {
+					socket.emit('joinRoomResult', {success: false});
+					return;
+				}
+				
+				if(!account) {
+					socket.emit('joinRoomResult', {success: false});
+					return;
+				}
+				
+				tempLife.push(account.life);
+			});
+		}
+		
+		socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 	});
 };
 
