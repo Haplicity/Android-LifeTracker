@@ -185,10 +185,12 @@ var socketJoinRoom = function(socket, data) {
 				users: docs.users
 		};
 		
-		var tempLife = [];
+		
 		
 		for (var i = 0; i < docs.users.length; i++) {
-			var life = Account.AccountModel.findByUsername(docs.users[i], function(err, account) {
+			Account.AccountModel.findByUsername(docs.users[i], function(err, account) {
+				var tempLife = [];
+				
 				if (err) {
 					socket.emit('joinRoomResult', {success: false});
 					return;
@@ -199,10 +201,10 @@ var socketJoinRoom = function(socket, data) {
 					return;
 				}
 				
-				return account.life;
+				tempLife.push(account.life);
+				
+				console.log(tempLife);
 			});
-			
-			tempLife.push(life);
 		}
 		
 		console.log(tempLife);
