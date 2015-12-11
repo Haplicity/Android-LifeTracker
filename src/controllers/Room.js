@@ -229,7 +229,7 @@ var socketLeaveRoom = function(socket, data) {
 			docs.users.splice(index, 1);
 		}
 		
-		socket.leave(docs.name + docs.creator);
+		socket.leave(data[0].roomName + data[0].creator);
 		
 		if (docs.users.length === 0) {
 			docs.remove(function(err) {
