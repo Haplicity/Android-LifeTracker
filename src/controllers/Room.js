@@ -200,6 +200,7 @@ var socketJoinRoom = function(socket, data) {
 				}
 				
 				tempLife.push(account.life);
+				console.log(account.life);
 			});
 		}
 		
