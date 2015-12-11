@@ -187,8 +187,8 @@ var socketJoinRoom = function(socket, data) {
 		
 		var tempLife = [];
 		
-		docs.users.forEach (function() {
-			Account.AccountModel.findByUsername(docs.users[i], function(err, account) {
+		docs.users.forEach (function(user) {
+			Account.AccountModel.findByUsername(user, function(err, account) {
 				
 				if (err) {
 					socket.emit('joinRoomResult', {success: false});
