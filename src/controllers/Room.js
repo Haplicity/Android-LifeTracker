@@ -201,7 +201,7 @@ var socketJoinRoom = function(socket, data) {
 					return;
 				}
 				
-				return callback(account.life);
+				return account.life;
 			});
 			
 			tempLife.push(life);
