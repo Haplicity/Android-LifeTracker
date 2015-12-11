@@ -177,7 +177,30 @@ var socketJoinRoom = function(socket, data) {
 				return;
 			}
 			
-			socket.emit('joinRoomResult', {success: true});
+			var tempRoom = {
+				name: docs.name,
+				description: docs.description,
+				creator: docs.creator,
+				users: docs.users
+			}
+			
+			var tempLife = [];
+			
+			for (int i = 0; i < users.length; i++) {
+				Account.AccountModel.findByUsername(users[i], function(err, account) {
+					if (err) {
+						return;
+					}
+					
+					if(!account) {
+						return callback();
+					}
+					
+					tempLife.push(account.life);
+				});
+			}
+			
+			socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 		});
 	});
 };
