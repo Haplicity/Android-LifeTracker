@@ -204,7 +204,7 @@ var socketJoinRoom = function(socket, data) {
 			});
 			
 			var tempObj = {
-					life: tempInt;
+					life: tempInt
 			};
 			
 			tempLife.push(tempObj);
