@@ -200,12 +200,14 @@ var socketJoinRoom = function(socket, data) {
 				}
 				
 				var tempObj = {
-					life: account.life.toString().trim()
+					life: account.life
 				};
 				
 				tempLife.push(tempObj);
 			});
 		}
+		
+		console.log(tempLife);
 		
 		socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 	});
