@@ -68,16 +68,6 @@ var socketLogin = function(socket, data) {
 			return;
 		} 
 		
-		if (!account.life) {
-			account.life = 40;
-			account.save(function(err) {
-				if (err) {
-					socket.emit('loginResult', {success: false});
-					return;
-				}
-			});
-		}
-		
 		var accountData = account.toAPI();
 		
 		socket.emit('loginResult', {success: true, id: accountData._id});
