@@ -199,8 +199,11 @@ var socketJoinRoom = function(socket, data) {
 					return;
 				}
 				
-				tempLife.push(account.life);
-				console.log(account.life);
+				var tempObj = {
+					life: account.life
+				};
+				
+				tempLife.push(tempObj);
 			});
 		}
 		
