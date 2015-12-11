@@ -185,7 +185,7 @@ var socketJoinRoom = function(socket, data) {
 				users: docs.users
 		};
 		
-		var tempLife = new Array();
+		var tempLife = [];
 		
 		docs.users.forEach (function(user) {
 			Account.AccountModel.findByUsername(user, function(err, account) {
@@ -200,7 +200,9 @@ var socketJoinRoom = function(socket, data) {
 					return;
 				}
 				
+				console.log(account.username + ": " + account.life);
 				tempLife.push(account.life);
+				console.log(tempLife);
 			});
 		});
 		
