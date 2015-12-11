@@ -207,7 +207,7 @@ var socketJoinRoom = function(socket, data) {
 			tempLife.push(life);
 		}
 		
-		//socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
+		socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 	});
 };
 
