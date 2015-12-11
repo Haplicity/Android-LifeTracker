@@ -117,13 +117,15 @@ var deleteAllRooms = function() {
 var socketCreateRoom = function(socket, data) {
 
 	var RoomData = {
-		name: data[0].title,
+		name: data[0].roomName,
 		description: data[0].description,
 		creator: data[0].creator,
 		users: data[0].username
 	};
 	
 	var newRoom = new Room.RoomModel(RoomData);
+	
+	socket.join(data[0].roomName + data[0].creator);
 	
 	newRoom.save(function(err) {
 		if (err) {
@@ -159,7 +161,7 @@ var socketGetRooms = function(socket) {
 };
 
 var socketJoinRoom = function(socket, data) {
-	Room.RoomModel.findByName(data[0].creator, data[0].name, function(err, docs) {
+	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
 		if (err || !docs) {
 			socket.emit('joinRoomResult', {success: false});
 			return;
@@ -177,6 +179,8 @@ var socketJoinRoom = function(socket, data) {
 				return;
 			}
 		});
+		
+		socket.join(docs.name + docs.creator);
 		
 		var tempRoom = {
 				name: docs.name,
@@ -224,6 +228,8 @@ var socketLeaveRoom = function(socket, data) {
 		if (index > -1) {
 			docs.users.splice(index, 1);
 		}
+		
+		socket.leave(docs.name + docs.creator);
 		
 		if (docs.users.length === 0) {
 			docs.remove(function(err) {
