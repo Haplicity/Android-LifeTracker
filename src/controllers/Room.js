@@ -60,6 +60,8 @@ var joinRoom = function(req, res) {
 				return res.status(400).json({error: 'An error occurred'});
 			}
 			
+			io.to(req.body.name + req.body.creator).emit('userJoinedRoom', {success: true, username: req.session.account.username});
+			
 			res.json({redirect: '/maker'});
 		});
 	});
@@ -95,6 +97,8 @@ var leaveRoom = function(req, res) {
 					console.log(err);
 					return res.status(400).json({error: 'An error occurred'});
 				}
+				
+				io.to(req.body.name + req.body.creator).emit('userLeftRoom', {success: true, username: req.session.account.username});
 				
 				res.json({redirect: '/maker'});
 			});
@@ -197,6 +201,7 @@ var socketJoinRoom = function(socket, data) {
 				tempLife.push(account.life);
 				
 				if (i == docs.users.length) {
+					io.to(docs.name + docs.creator).emit('userJoinedRoom', {success: true, username: data[0].username});
 					socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 				}
 			});
@@ -235,6 +240,8 @@ var socketLeaveRoom = function(socket, data) {
 					return;
 				}
 				
+				
+				io.to(docs.name + docs.creator).emit('userLeftRoom', {success: true, username: data[0].username});
 				socket.emit('leaveRoomResult', {success: true});
 			});
 		}
