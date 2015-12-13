@@ -98,6 +98,30 @@ var socketSignup = function(socket, data) {
 	});
 };
 
+var socketUpdateLife = function(io, socket, data) {
+	Account.AccountModel.findByUsername(data[0].username, function(err, account) {
+		if (err) {
+			socket.emit('updateLifeResult', {success: false});
+			return;
+		}
+		
+		if(!account) {
+			socket.emit('updateLifeResult', {success: false});
+            return;
+        }
+		
+		account.life += data[0].gainNumber;
+		account.save(function(err) {
+			if (err) {
+				socket.emit('updateLifeResult', {success: false});
+				return;
+			}
+			
+			io.to(data[0].roomName + data[0].creator).emit('updateLifeResult', {success: true, username: data[0].username, life: account.life});
+		});
+	});
+};
+
 var resetLife = function(data) {
 	Account.AccountModel.findByUsername(data[0].username, function(err, account) {
 		if (err) {

@@ -102,18 +102,6 @@ var leaveRoom = function(req, res) {
 	});
 };
 
-var deleteAllRooms = function() {
-	Room.RoomModel.findAll(function(err, docs) {
-		if (err) {
-			return;
-		}
-		
-		for (var i = 0; i < docs.length; i++) {
-			docs[i].remove();
-		}
-	});
-};
-
 var socketCreateRoom = function(socket, data) {
 
 	var RoomData = {
@@ -261,5 +249,3 @@ module.exports.socketCreateRoom = socketCreateRoom;
 module.exports.socketGetRooms = socketGetRooms;
 module.exports.socketJoinRoom = socketJoinRoom;
 module.exports.socketLeaveRoom = socketLeaveRoom;
-
-module.exports.deleteAllRooms = deleteAllRooms;

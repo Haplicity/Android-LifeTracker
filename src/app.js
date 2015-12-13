@@ -111,4 +111,8 @@ io.on('connection', function(socket) {
 		controllers.Account.resetLife(data);
 		controllers.Room.socketLeaveRoom(socket, data);
 	});
+	
+	socket.on('updateLife', function(data) {
+		controllers.Account.socketUpdateLife(io, socket, data);
+	});
 });
