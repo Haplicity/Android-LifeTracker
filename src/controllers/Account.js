@@ -117,7 +117,7 @@ var socketUpdateLife = function(io, socket, data) {
 				return;
 			}
 			
-			io.to(data[0].roomName + data[0].creator).emit('updateLifeResult', {success: true, username: data[0].username, life: account.life});
+			io.to(data[0].roomName + data[0].creator).emit('updateLifeResult', {success: true, username: data[0].username, lifeGain: data[0].gainNumber});
 		});
 	});
 };
@@ -148,4 +148,5 @@ module.exports.signupPage = signupPage;
 module.exports.signup = signup;
 module.exports.socketLogin = socketLogin;
 module.exports.socketSignup = socketSignup;
+module.exports.socketUpdateLife = socketUpdateLife;
 module.exports.resetLife = resetLife;
