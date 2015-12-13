@@ -104,12 +104,12 @@ io.on('connection', function(socket) {
 	
 	socket.on('joinRoom', function(data) {
 		controllers.Account.resetLife(data);
-		controllers.Room.socketJoinRoom(socket, data);
+		controllers.Room.socketJoinRoom(io, socket, data);
 	});
 	
 	socket.on('leaveRoom', function(data) {
 		controllers.Account.resetLife(data);
-		controllers.Room.socketLeaveRoom(socket, data);
+		controllers.Room.socketLeaveRoom(io, socket, data);
 	});
 	
 	socket.on('updateLife', function(data) {

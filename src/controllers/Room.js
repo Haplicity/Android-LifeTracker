@@ -148,7 +148,7 @@ var socketGetRooms = function(socket) {
 	});
 };
 
-var socketJoinRoom = function(socket, data) {
+var socketJoinRoom = function(io, socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
 		if (err || !docs) {
 			socket.emit('joinRoomResult', {success: false});
@@ -205,7 +205,7 @@ var socketJoinRoom = function(socket, data) {
 	});
 };
 
-var socketLeaveRoom = function(socket, data) {
+var socketLeaveRoom = function(io, socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
 		if (err) {
 			socket.emit('leaveRoomResult', {success: false});
