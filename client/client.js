@@ -2,11 +2,13 @@
 
 $(document).ready(function() {
 
+	//displays error messages to user
     function handleError(message) {
         $("#errorMessage").text(message);
         $("#error").animate({height:'toggle'},350);
     }
     
+	//sends Ajax data to server
     function sendAjax(action, data) {
         $.ajax({
             cache: false,
@@ -27,6 +29,7 @@ $(document).ready(function() {
         });        
     }
     
+	//sends signup form data to server
     $("#signupSubmit").on("click", function(e) {
         e.preventDefault();
     
@@ -47,6 +50,7 @@ $(document).ready(function() {
         return false;
     });
 
+	//sends login form data to server
     $("#loginSubmit").on("click", function(e) {
         e.preventDefault();
     

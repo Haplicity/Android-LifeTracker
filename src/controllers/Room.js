@@ -4,6 +4,7 @@ var models = require('../models');
 var Room = models.Room;
 var Account = models.Account;
 
+//loads maker page
 var makerPage = function(req, res) {
 	Room.RoomModel.findAll(function(err, docs) {
 		if (err) {
@@ -15,6 +16,7 @@ var makerPage = function(req, res) {
 	});
 };
 
+//creates room from client data
 var makeRoom = function(req, res) {
 	if (!req.body.name) {
 		return res.status(400).json({error: "Name is required"});		
@@ -39,6 +41,7 @@ var makeRoom = function(req, res) {
 	});
 };
 
+//adds user to selected room
 var joinRoom = function(req, res) {
 	Room.RoomModel.findByName(req.body.creator, req.body.name, function(err, docs) {
 		if (err) {
@@ -65,6 +68,7 @@ var joinRoom = function(req, res) {
 	});
 };
 
+//removes user from selected room
 var leaveRoom = function(req, res) {
 	Room.RoomModel.findByName(req.body.creator, req.body.name, function(err, docs) {
 		if (err) {
@@ -102,6 +106,7 @@ var leaveRoom = function(req, res) {
 	});
 };
 
+//creates new room from Android device, and adds user to room
 var socketCreateRoom = function(socket, data) {
 
 	var RoomData = {
@@ -121,10 +126,12 @@ var socketCreateRoom = function(socket, data) {
 			return;
 		} 
 		
+		//sends results to Android device
 		socket.emit('createRoomResult', {success: true});
 	});
 };
 
+//returns all rooms in database to Android device
 var socketGetRooms = function(socket) {
 	Room.RoomModel.findAll(function(err, docs) {
 		if (err) {
@@ -144,10 +151,12 @@ var socketGetRooms = function(socket) {
 			array.push(tempRoom);
 		}
 		
+		//send results to Android device
 		socket.emit('getRoomResult', {success: true, rooms: array});
 	});
 };
 
+//adds user to selected room from Android device
 var socketJoinRoom = function(io, socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
 		if (err || !docs) {
@@ -168,6 +177,7 @@ var socketJoinRoom = function(io, socket, data) {
 			}
 		});
 		
+		//adds the socket to the room
 		socket.join(docs.name + docs.creator);
 		
 		var tempRoom = {
@@ -197,7 +207,9 @@ var socketJoinRoom = function(io, socket, data) {
 				tempLife.push(account.life);
 				
 				if (i == docs.users.length) {
+					//sends new user information to all sockets in the room
 					io.to(docs.name + docs.creator).emit('userJoinedRoom', {success: true, username: data[0].username});
+					//sends results to Android device
 					socket.emit('joinRoomResult', {success: true, room: tempRoom, life: tempLife});
 				}
 			});
@@ -205,6 +217,7 @@ var socketJoinRoom = function(io, socket, data) {
 	});
 };
 
+//removes user from selected room from Android device
 var socketLeaveRoom = function(io, socket, data) {
 	Room.RoomModel.findByName(data[0].creator, data[0].roomName, function(err, docs) {
 		if (err) {
@@ -218,6 +231,7 @@ var socketLeaveRoom = function(io, socket, data) {
 			docs.users.splice(index, 1);
 		}
 		
+		//removes socket from room
 		socket.leave(docs.name + docs.creator);
 		
 		if (docs.users.length === 0) {
@@ -236,8 +250,9 @@ var socketLeaveRoom = function(io, socket, data) {
 					return;
 				}
 				
-				
+				//sends user information to all sockets in the room
 				io.to(docs.name + docs.creator).emit('userLeftRoom', {success: true, username: data[0].username});
+				//sends results back to Android device
 				socket.emit('leaveRoomResult', {success: true});
 			});
 		}

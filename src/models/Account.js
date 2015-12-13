@@ -6,6 +6,7 @@ var iterations = 10000;
 var saltLength = 64;
 var keyLength = 64;
 
+//account data
 var AccountSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -36,6 +37,7 @@ var AccountSchema = new mongoose.Schema({
 
 });
 
+//returns account data
 AccountSchema.methods.toAPI = function() {
     //_id is built into your mongo document and is guaranteed to be unique
     return {
@@ -44,6 +46,7 @@ AccountSchema.methods.toAPI = function() {
     };
 };
 
+//validates account's password
 AccountSchema.methods.validatePassword = function(password, callback) {
 	var pass = this.password;
 	
@@ -55,6 +58,7 @@ AccountSchema.methods.validatePassword = function(password, callback) {
 	});
 };
 
+//finds account by name and returns its data
 AccountSchema.statics.findByUsername = function(name, callback) {
 
     var search = {
@@ -64,6 +68,7 @@ AccountSchema.statics.findByUsername = function(name, callback) {
     return AccountModel.findOne(search, callback);
 };
 
+//generates a hash for the password
 AccountSchema.statics.generateHash = function(password, callback) {
 	var salt = crypto.randomBytes(saltLength);
 	
@@ -72,6 +77,7 @@ AccountSchema.statics.generateHash = function(password, callback) {
 	});
 };
 
+//finds account by username and validates its password
 AccountSchema.statics.authenticate = function(username, password, callback) {
 	return AccountModel.findByUsername(username, function(err, doc) {
 

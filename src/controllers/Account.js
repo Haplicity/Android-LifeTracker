@@ -1,19 +1,23 @@
 var models = require('../models');
 var Account = models.Account;
 
+//loads login page
 var loginPage = function(req, res) {
 	res.render('login', { csrfToken: req.csrfToken() });
 };
 
+//loads signup page
 var signupPage = function(req, res) {
 	res.render('signup', { csrfToken: req.csrfToken() });
 };
 
+//logs user out
 var logout = function(req, res) {
 	req.session.destroy();
 	res.redirect('/');
 };
 
+//authenticates user login
 var login = function(req, res) {
 	if (!req.body.username || !req.body.pass) {
 		return res.status(400).json({error: "All fields are required!"});
@@ -30,6 +34,7 @@ var login = function(req, res) {
 	});
 };
 
+//adds new account to database, and then logs new account in
 var signup = function(req, res) {
 	if (!req.body.username || !req.body.pass || !req.body.pass2) {
 		return res.status(400).json({error: "All fields are required!"});
@@ -61,6 +66,7 @@ var signup = function(req, res) {
 	});
 };
 
+//authenticates login data from Android device
 var socketLogin = function(socket, data) {
 	Account.AccountModel.authenticate(data[0].username, data[0].pass, function(err, account) {
 		if (err || !account) {
@@ -70,10 +76,12 @@ var socketLogin = function(socket, data) {
 		
 		var accountData = account.toAPI();
 		
+		//send results back to device
 		socket.emit('loginResult', {success: true, id: accountData._id});
 	});
 };
 
+//creates new account from Android device
 var socketSignup = function(socket, data) {
 	Account.AccountModel.generateHash(data[0].pass, function(salt, hash) {
 		var accountData = {
@@ -93,11 +101,13 @@ var socketSignup = function(socket, data) {
 			
 			accountData = newAccount.toAPI();
 			
+			//send results back to device
 			socket.emit('signupResult', {success: true, id: accountData._id});
 		});
 	});
 };
 
+//updates account life total from Android device
 var socketUpdateLife = function(io, socket, data) {
 	Account.AccountModel.findByUsername(data[0].username, function(err, account) {
 		if (err) {
@@ -117,11 +127,13 @@ var socketUpdateLife = function(io, socket, data) {
 				return;
 			}
 			
+			//send results to all devices in the room
 			io.to(data[0].roomName + data[0].creator).emit('updateLifeResult', {success: true, username: data[0].username, lifeGain: data[0].gainNumber});
 		});
 	});
 };
 
+//resets account life to default value
 var resetLife = function(data) {
 	Account.AccountModel.findByUsername(data[0].username, function(err, account) {
 		if (err) {

@@ -2,10 +2,12 @@
 
 $(document).ready(function() {
 
+	//displays error message to user
     function handleError(message) {
         $("#errorMessage").text(message);
     }
     
+	//sends Ajax data to server
     function sendAjax(action, data) {
         $.ajax({
             cache: false,
@@ -26,6 +28,7 @@ $(document).ready(function() {
         });        
     }
     
+	//sends createRoom form data to server
     $("#makeRoomSubmit").on("click", function(e) {
         e.preventDefault();
     
@@ -41,23 +44,23 @@ $(document).ready(function() {
         return false;
     });
 	
+	//sends joinRoom form data to server
 	$(".joinRoomSubmit").on("click", function(e) {
 		e.preventDefault();
 		
 		$("#errorMessage").animate({length:'hide'}, 350);
 		
-		//console.dir(this);
 		sendAjax(this.parentNode.action, $(this.parentNode).serialize());
 		
 		return false;
 	});
 	
+	//sends leaveRoom form data to server
 	$(".leaveRoomSubmit").on("click", function(e) {
 		e.preventDefault();
 		
 		$("#errorMessage").animate({length:'hide'}, 350);
 		
-		//console.dir(this);
 		sendAjax(this.parentNode.action, $(this.parentNode).serialize());
 		
 		return false;

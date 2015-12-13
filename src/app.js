@@ -80,11 +80,8 @@ var server = app.listen(port, function(err) {
 
 var io = require('socket.io').listen(server);
 
+//setup socketIO events
 io.on('connection', function(socket) {
-	console.log('device connected');
-	
-	//controllers.Room.deleteAllRooms();
-	
 	socket.on('login', function(data) {
 		controllers.Account.socketLogin(socket, data);
 	});
